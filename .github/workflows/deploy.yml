@@ -31,9 +31,9 @@ jobs:
         run: cd website && npm ci
       
       - name: Build
-        run: cd website && npm run build
-        env:
-          CI: false
+        run: |
+          cd website
+          CI=false npm run build
       
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -46,6 +46,10 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    
+    permissions:
+      pages: write
+      id-token: write
     
     environment:
       name: github-pages
