@@ -15,6 +15,6 @@ Currently contains materials and assignments related to statistical assumptions 
 For any questions or discussions about this repository:
 - Academic Email: jarocha@smu.edu
 
-## Errata
+### Errata
 
 3.4. The Test Statistic should be positive 9.69 rather than negative 9.69.
