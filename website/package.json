@@ -2,7 +2,7 @@
   "name": "website",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jonx0037.github.io/ds6371-unit3",
+  "homepage": "/ds6371-unit3/",
   "dependencies": {
     "cra-template": "1.2.0",
     "react": "^18.2.0",
