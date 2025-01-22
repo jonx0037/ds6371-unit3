@@ -1,0 +1,59 @@
+name: Deploy React App to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  sync-branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Merge main into gh-pages
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git checkout gh-pages || git checkout -b gh-pages
+          git merge main --allow-unrelated-histories || true
+          git push origin gh-pages
+
+  build-and-deploy:
+    needs: sync-branches
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: website/package-lock.json
+
+      - name: Install Dependencies
+        run: cd website && npm ci
+
+      - name: Build
+        run: |
+          cd website
+          CI=false npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: website/build
+          branch: gh-pages
+          clean: true
